@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Proyecto_Programacion_III::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Proyecto_Programacion_III-Debug-4d4dba4b39ccec39cf2f.json",
+					"jsonFile" : "target-Proyecto_Programacion_III-Debug-df7729a0f634e13a1611.json",
 					"name" : "Proyecto_Programacion_III",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/delfi/Documents/Proyecto-Programacion-III/cmake-build-debug",
-		"source" : "C:/Users/delfi/Documents/Proyecto-Programacion-III"
+		"build" : "C:/Users/verzi/Documents/Proyecto Prog 3/Proyecto-Programacion-III/cmake-build-debug",
+		"source" : "C:/Users/verzi/Documents/Proyecto Prog 3/Proyecto-Programacion-III"
 	},
 	"version" : 
 	{

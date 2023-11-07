@@ -2,197 +2,390 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <map>
-#include <vector>
-#include <chrono>
-#include "time.h"
-#include "lista.h"
-#include "cola.h"
-#include "pila.h"
+#include "./Estructuras/HashMap/Lista.h"
+#include "./Estructuras/Cola.h"
+#include "./Estructuras/Pila.h"
 #include "string.h"
-#include "arbolbinario.h"
-#include "hashMapp.h"
-#include "hashEntryy.h"
+#include "./Estructuras/Arbolbinario.h"
+#include "./Estructuras/HashMap/HashMapList.h"
+#include <time.h>
+#include <vector>
 using namespace std;
 
-
-
-/*void total_art_dif(string fileName){
-    fstream fin;
-    fin.open("./"+fileName,ios::in);
+//Cantidad total de articulos diferentes
+void total_art_dif(){
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv",ios::in);
 
     string line;
     int total_art_dif=-1;
 
-    while(getline(fin,line)){
+    while(getline(archivo,line)){
         total_art_dif++;
     }
 
     cout<<"Total de articulos diferentes: "<<total_art_dif<<endl;
 }
 
-void total_art(string fileName){
+//Contador de columnas en el archivo CSV
+int numColumnas(){
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv",ios::in);
+    string line,c;
+    int columna;
+    getline(archivo,line);
 
-}
-void min_stock (string fileName, int n) {
-    fstream fin;
-    fin.open("./" + fileName, ios::in);
-
-    string line, word;
-    ArbolBinario<Articulo> arbol;
-    int cantidad = 0;
-    while (getline(fin, line)) {
+    while(getline(archivo,line)){
         stringstream s(line);
-        string nombre_articulo;
-        int col = 0;
-        while (getline(s, word, ',')) {
-            int cantidad = 0;
-            if (word.size() > 2) {
-                word = word.substr(1, word.size() - 2);
-            } else {
-                word = "0";
-            }
-            if (col == 1) { // La primera columna es el nombre del artículo
-                nombre_articulo = word;
-            } else if (col >= 3) {
-                cantidad += stoi(word);
-            }
-
-            arbolbinario.put(cantidad);
+        columna=0;
+        while(getline(s,c,',')){
+            columna++;
         }
     }
+    return columna;
 }
 
+//Cantidad total de articulos (Stock total)
+void total_art(){
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv",ios::in);
+    string line,grupo,codigo_barras,articulo,stock_por_deposito;
+    int numDepositos=numColumnas()-3, cantidad=0;
+    getline(archivo,line);
 
-void exploreCSV(string fileName){
-    fstream fin;
-    fin.open("./"+fileName,ios::in);
-
-    HashMap<string, int> hashTable(10000); // Asumiendo un tamaño máximo de 10,000 artículos diferentes
-    string line,word;
-    int total_art = 0;
-
-    while(getline(fin,line)){
+    while(getline(archivo,line)){
         stringstream s(line);
-        string nombre_articulo;
-        int cantidad = 0;
-        int col = 0;
-        while(getline(s,word,',')){
-            if(word.size()>0){
-                word=word.substr(1,word.size()-2);
+        getline(s,grupo,',');
+        getline(s,codigo_barras,',');
+        getline(s,articulo,',');
+
+        for(int i=0;i<numDepositos;i++){
+            getline(s,stock_por_deposito,',');
+            if(!stock_por_deposito.substr(1,stock_por_deposito.size()-2).empty()){
+                stock_por_deposito=stock_por_deposito.substr(1,stock_por_deposito.size()-2);
             }else{
-                word="0";
+                stock_por_deposito="0";
             }
-            if(col == 0) { // La primera columna es el nombre del artículo
-                nombre_articulo = word;
-            } else if(col == 5) { // La sexta columna es la cantidad
-                cantidad = stoi(word);
-                total_art += cantidad;
-            }
-            col++;
+            cantidad+=stoi(stock_por_deposito);
         }
-        try {
-            int current_count = hashTable.get(nombre_articulo);
-            hashTable.put(nombre_articulo, current_count + cantidad);
-        } catch(int e) {
-            if(e == 404) { // Si el artículo no está en la tabla hash
-                hashTable.put(nombre_articulo, cantidad);
-            }
-        }
+
     }
 
-    cout << "Total de articulos diferentes: " << hashTable.size() << endl; // Asumiendo que hay una función size() en la tabla hash
-    cout << "Total de articulos: " << total_art << endl;
+    cout<<"Total de articulos: "<<cantidad<<endl;
 }
 
-
-/*
-void exploreHeaders(string fileName){
-    fstream fin;
-    fin.open("./"+fileName,ios::in);
-
-    string headers,header;
-    getline(fin,headers);
-
-    stringstream s(headers);
-    while(getline(s,header,',')){
-        cout<<header<<endl;
-    }
-}
- */
-
-
-
+//Struct de Articulos con operadores sobrecargados para la utilizacion del arbol
 struct Articulo {
-    std::string grupo;
-    std::string codigoBarras;
-    std::string nombreArticulo;
-    std::map<std::string, int> depositos; // Mapa de depósito a cantidad
+    string nombre;
+    int cantotales;
+
+    friend std::ostream& operator<<(std::ostream& os, const Articulo& objeto) {
+        os << ">  " <<  objeto.nombre << endl;
+        return os;
+    }
+
+    bool operator<(const Articulo& otro) const {
+        if (cantotales < otro.cantotales) {
+            return true;
+        }  else {
+            return false;
+        }
+    }
+
+    bool operator<=(const Articulo& otro) const {
+        if (cantotales <= otro.cantotales) {
+            return true;
+        }  else {
+            return false;
+        }
+    }
+
+    bool operator>(const Articulo& otro) const {
+        if (cantotales > otro.cantotales) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    bool operator>=(const Articulo& otro) const {
+        if (cantotales >= otro.cantotales) {
+            return true;
+        }  else {
+            return false;
+        }
+    }
 };
-int convertirAEntero(const std::string& str) {
-    // Eliminar comillas dobles de la cadena
-    std::string cadenaSinComillas = str;
-    if (cadenaSinComillas.front() == '"' && cadenaSinComillas.back() == '"') {
-        cadenaSinComillas = cadenaSinComillas.substr(1, cadenaSinComillas.length() - 2);
+
+
+//Listado de articulos con cantidad n o menos de stock
+void min_stock(int n){
+
+    ArbolBinario<Articulo> arbol;
+    Articulo raiz;
+    raiz.nombre="Raiz";
+    raiz.cantotales=n;
+    arbol.putMin_Stock(raiz);
+
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv",ios::in);
+    string line,grupo,codigo_barras,articulo,stock_por_deposito;
+    int numDepositos=numColumnas()-3;
+    getline(archivo,line);
+
+    while(getline(archivo,line)){
+        Articulo art;
+        int stock_por_articulo=0;
+        stringstream s(line);
+        getline(s,grupo,',');
+        getline(s,codigo_barras,',');
+        getline(s,articulo,',');
+        articulo=articulo.substr(1,articulo.size()-2);
+        art.nombre=articulo;
+
+        for(int i=0;i<numDepositos;i++){
+            getline(s,stock_por_deposito,',');
+            if(!stock_por_deposito.substr(1,stock_por_deposito.size()-2).empty()){
+                stock_por_deposito=stock_por_deposito.substr(1,stock_por_deposito.size()-2);
+            }else{
+                stock_por_deposito="0";
+            }
+            stock_por_articulo+=stoi(stock_por_deposito);
+        }
+        art.cantotales=stock_por_articulo;
+        arbol.putMin_Stock(art);
+    }
+    cout<<"*ARTICULOS*"<<endl;
+    arbol.inorderizq();
+}
+
+
+// Listado de artículos con cantidad n o menos de stock según un depósito
+void min_stock(int n, int deposito) {
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv", ios::in);
+    string line, grupo, codigo_barras, articulo, stock_por_deposito;
+    int numDepositos = numColumnas() - 3;
+    Lista<string> minStock;
+    getline(archivo, line);
+
+    while(getline(archivo, line)) {
+        stringstream s(line);
+        getline(s, grupo, ',');
+        getline(s, codigo_barras, ',');
+        getline(s, articulo, ',');
+        articulo = articulo.substr(1, articulo.size() - 2);
+
+        int stock_actual=0;
+
+        for(int i = 0; i < numDepositos; i++) {
+            getline(s, stock_por_deposito, ',');
+            if(i == (deposito - 1)) {  // Asume que deposito empieza en 1
+                if(!stock_por_deposito.substr(1, stock_por_deposito.size() - 2).empty()){
+                    stock_por_deposito = stock_por_deposito.substr(1, stock_por_deposito.size() - 2);
+                } else {
+                    stock_por_deposito = "0";
+                }
+                stock_actual = stoi(stock_por_deposito);
+                break;  // Salir después de obtener el stock del depósito interesado
+            }
+        }
+
+        if(stock_actual <= n) {
+            // minStock.insertarUltimo(articulo);
+            cout << "----------------------------------" << endl;
+            cout << articulo << endl;
+        }
     }
 
-    // Si la cadena está vacía después de eliminar las comillas, devolver 0
-    if (cadenaSinComillas.empty()) {
-        return 0;
+    // Si se necesita imprimir la lista completa descomentar la siguiente línea
+    // minStock.printAbajo();
+}
+
+unsigned int hashFunc(string clave) {
+    unsigned int divisor = 97;
+    unsigned int hash = 0;
+
+    for (char i : clave) {
+        hash = (hash * 31) + static_cast<unsigned int>(i);
     }
 
-    try {
-        return std::stoi(cadenaSinComillas);
-    } catch (const std::invalid_argument& e) {
-        std::cerr << "Error al convertir '" << cadenaSinComillas << "' a entero: " << e.what() << std::endl;
-        return 0;  // o cualquier valor predeterminado que desees
-    } catch (const std::out_of_range& e) {
-        std::cerr << "Número fuera de rango al convertir '" << cadenaSinComillas << "' a entero: " << e.what() << std::endl;
-        return 0;  // o cualquier valor predeterminado que desees
+    return hash % divisor;
+}
+
+//El stock del articulo en un deposito
+void stock(string nombre_articulo,int deposito){
+
+    HashMapList<string,vector<int>> hashMap(100000,hashFunc);
+
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv",ios::in);
+
+    string line,stock_por_deposito,nombre,grupo,codigoBarras;
+    int numDepositos=numColumnas()-3;
+    getline(archivo,line);
+
+    while(getline(archivo,line)){
+        stringstream s(line);
+
+        getline(s, grupo, ',');
+        getline(s, codigoBarras, ',');
+        getline(s, nombre, ',');
+        nombre=nombre.substr(1,nombre.size()-2);
+
+        vector<int> stock(numDepositos, 0);
+
+        for(int i=0;i<numDepositos;i++){
+            getline(s,stock_por_deposito,',');
+            if(!stock_por_deposito.substr(1,stock_por_deposito.size()-2).empty()){
+                stock[i]=stoi(stock_por_deposito.substr(1,stock_por_deposito.size()-2));
+            }else{
+                stock[i]=0;
+            }
+        }
+        hashMap.put(nombre, stock);
+    }
+
+    archivo.close();
+
+    Lista<HashEntry<string,vector<int>>>* lista=hashMap.get(nombre_articulo);
+
+    if(lista!=nullptr){
+        Nodo<HashEntry<string,vector<int>>>* nodo=lista->getInicio();
+        while (nodo!=nullptr) {
+            if (nodo->getDato().getClave()==nombre_articulo) {
+                vector<int> stock=nodo->getDato().getValor();
+                if(deposito<=numDepositos && deposito>0){
+                    cout<<"Stock en el deposito"<<deposito<<": "<<stock[deposito-1]<<endl;
+                }else if(deposito>numDepositos){
+                    cout<<"Deposito "<<deposito<<" no encontrado. Recuerde que hay "<<numDepositos<<" depositos"<<endl;
+                }else{
+                    cout<<"Deposito "<<deposito<<" no encontrado. No existe tal deposito."<<endl;
+                }
+                break;
+            }
+            nodo=nodo->getSiguiente();
+        }
+
+        if(nodo==nullptr){
+            cout<<"Articulo "<<nombre_articulo<<" no encontrado"<<endl;
+        }
+
+    }else {
+        cout<<"Articulo "<<nombre_articulo<<" no encontrado"<<endl;
     }
 }
 
-void leerCSV(const std::string& archivo) {
-    std::ifstream file(archivo);
-    std::string linea;
+// Función para obtener el stock total del artículo ingresado como argumento
+void stock(string nombre_articulo) {
+    // Crea una instancia de HashMapList con el tamaño y la función hash especificados
+    HashMapList<string,vector<int>> hashMap(100000, hashFunc);
 
-    // Ignoramos la primera línea (encabezados)
-    std::getline(file, linea);
+    // Abre el archivo CSV en modo lectura
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv", ios::in);
 
-    std::vector<Articulo> articulos;
+    // Variables para almacenar las líneas y las palabras del archivo, así como los datos del artículo
+    string line, nombre, grupo, codigoBarras, stock_por_deposito;
+    int numDepositos = numColumnas() - 3; // Calcula el número de depósitos
 
-    while (std::getline(file, linea)) {
-        std::stringstream ss(linea);
-        std::string item;
+    // Lee la primera línea para descartar el encabezado del CSV
+    getline(archivo, line);
 
-        Articulo articulo;
+    // Procesa el archivo línea por línea
+    while (getline(archivo, line)) {
+        stringstream s(line);
 
-        std::getline(ss, articulo.grupo, ',');
-        std::getline(ss, articulo.codigoBarras, ',');
-        std::getline(ss, articulo.nombreArticulo, ',');
+        // Obtiene los datos del artículo del CSV
+        getline(s, grupo, ',');
+        getline(s, codigoBarras, ',');
+        getline(s, nombre, ',');
+        nombre = nombre.substr(1, nombre.size() - 2); // Limpia las comillas
 
-        int depositoNum = 1;
-        while (std::getline(ss, item, ',')) {
-            if(item.size()>0){
-                item=item.substr(1,item.size()-2);
-            }else{
-                item="0";
+        // Vector para almacenar el stock de cada depósito
+        vector<int> stock(numDepositos, 0);
+
+        // Recorre cada depósito y almacena el stock
+        for (int i = 0; i < numDepositos; i++) {
+            getline(s, stock_por_deposito, ',');
+            if (!stock_por_deposito.substr(1, stock_por_deposito.size() - 2).empty()) {
+                stock[i] = stoi(stock_por_deposito.substr(1, stock_por_deposito.size() - 2));
             }
-            articulo.depositos["deposito " + std::to_string(depositoNum)] = convertirAEntero(item);
-            depositoNum++;
         }
 
-        articulos.push_back(articulo);
+        // Agrega el artículo y su stock al HashMapList
+        hashMap.put(nombre, stock);
     }
 
-    // Imprimir el stock individual de cada artículo según depósito
-    for (const Articulo& art : articulos) {
-        std::cout << "Artículo: " << art.nombreArticulo << "\n";
-        for (const auto& deposito : art.depositos) {
-            std::cout << deposito.first << ": " << deposito.second << "\n";
+    archivo.close(); // Cierra el archivo
+
+    // Obtiene la lista de entradas para el artículo especificado
+    Lista<HashEntry<string,vector<int>>>* lista = hashMap.get(nombre_articulo);
+
+    // Si la lista no es nula, procesa las entradas
+    if(lista != nullptr) {
+        Nodo<HashEntry<string,vector<int>>>* nodo = lista->getInicio();
+        int stock_total = 0; // Variable para almacenar el stock total
+
+        // Recorre la lista y suma el stock de cada depósito
+        while (nodo != nullptr) {
+            if (nodo->getDato().getClave() == nombre_articulo) {
+                vector<int> stock = nodo->getDato().getValor();
+                for (int cantidad : stock) {
+                    stock_total += cantidad;
+                }
+                break;
+            }
+            nodo = nodo->getSiguiente();
         }
-        std::cout << "----------------------\n";
+
+        // Muestra el stock total del artículo
+        cout << "Stock total del articulo " << nombre_articulo << ": " << stock_total << endl;
+    } else {
+        // Si la lista es nula, significa que el artículo no se encontró
+        cout << "Articulo " << nombre_articulo << " no encontrado" << endl;
     }
+}
+
+//Listado de aquellos artículos cuyo stock es igual o supera el número n
+void max_stock(int n) {
+
+    ArbolBinario<Articulo> arbol;
+    Articulo raiz;
+    raiz.nombre="Raiz";
+    raiz.cantotales=n;
+    arbol.putMax_Stock(raiz);
+
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv",ios::in);
+    string line,grupo,codigo_barras,articulo,stock_por_deposito;
+    int numDepositos=numColumnas()-3;
+    getline(archivo,line);
+
+    while(getline(archivo,line)){
+        Articulo art;
+        int stock_por_articulo=0;
+        stringstream s(line);
+        getline(s,grupo,',');
+        getline(s,codigo_barras,',');
+        getline(s,articulo,',');
+        articulo=articulo.substr(1,articulo.size()-2);
+        art.nombre=articulo;
+
+        for(int i=0;i<numDepositos;i++){
+            getline(s,stock_por_deposito,',');
+            if(!stock_por_deposito.substr(1,stock_por_deposito.size()-2).empty()){
+                stock_por_deposito=stock_por_deposito.substr(1,stock_por_deposito.size()-2);
+            }else{
+                stock_por_deposito="0";
+            }
+            stock_por_articulo+=stoi(stock_por_deposito);
+        }
+        art.cantotales=stock_por_articulo;
+        arbol.putMax_Stock(art);
+    }
+    cout<<"*ARTICULOS*"<<endl;
+    arbol.inorderizq();
 }
 
 
@@ -201,95 +394,53 @@ int main(int argc, char **argv) {
     cout << "Comenzando a medir Tiempo\n" << endl;
     begin = clock();
 
+    int i;
+    string nombreIngresado;
 
-    cout<<"Cantidad de argumentos: "<<argc<<endl;
-    for(int i=0;i<argc;i++){
-        cout<<"Argumento "<<i<<": "<<argv[i]<<endl;
 
-        if(strcmp(argv[i],"-file") == 0){
-            cout<<"Nombre del Archivo: "<< argv[i+1]<<endl;
-            //exploreHeaders(argv[i+1]);
-            //exploreCSV(argv[i+1]);
-            cout<<endl;
-            //total_art_dif(argv[i+1]);
-            cout<<endl;
-            //total_art(argv[i+1]);
-            leerCSV(argv[i+1]);
-            break;
+    if(strcmp(argv[1],"-total_art_dif") == 0){
+        total_art_dif();
+
+    }else if(strcmp(argv[1],"-total_art")==0){
+        total_art();
+
+    }else if(strcmp(argv[1],"-min_stock")==0){
+        if(argc>3 && argc<=5){
+            if(strcmp(argv[3],",")==0){
+                min_stock(stoi(argv[2]),stoi(argv[4]));
+            }
+        }else{
+            min_stock(stoi(argv[2]));
         }
-    }
 
+    }else if(strcmp(argv[1],"-stock")==0){
+        i=2;
+        while(i<argc && strcmp(argv[i],",") != 0){
+            nombreIngresado+=argv[i];
+            nombreIngresado+=" ";
+            i++;
+        }
+        cout<<nombreIngresado<<endl;
+        nombreIngresado=nombreIngresado.substr(0,nombreIngresado.size()-1);
+        cout<<nombreIngresado<<endl;
+
+        if(i==argc){
+            stock(nombreIngresado);
+        }else{
+            stock(nombreIngresado,stoi(argv[argc-1]));
+        }
+
+    }else if(strcmp(argv[1],"-max_stock")==0){
+        max_stock(stoi(argv[2]));
+
+    }else{
+        cout<<"ARGUMENTO NO VALIDO"<<endl;
+    }
 
     cout<<endl;
     clock_t end = clock();
     double elapsed_secs = static_cast<double>(end - begin) / CLOCKS_PER_SEC;
-    cout << "Tardo elapsed_secs" << elapsed_secs << "\n" << std::endl;
+    cout << "Tardo elapsed_secs " << elapsed_secs << "\n" << endl;
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-int main(int argc, char* argv[]) {
-
-    // Verificar si se proporcionó el nombre del archivo como argumento
-    if (argc < 2) {
-        cerr << "Por favor, proporciona el nombre del archivo CSV como argumento." << endl;
-        return 1;
-    }
-
-    // Abrir el archivo CSV para lectura
-    ifstream fin(argv[1]);
-    if (!fin.is_open()) {
-        cerr << "Error al abrir el archivo." << endl;
-        return 1;
-    }
-
-    string line;
-    vector<string> headers;
-    // Leer la primera línea del archivo (generalmente contiene los nombres de las columnas)
-    getline(fin, line);
-    stringstream s(line);
-    string word;
-
-    // Separar los valores de la línea por comas
-    while (getline(s, word, ',')) {
-        // Limpiar las comillas y espacios adicionales
-        if (word.size() > 2) {
-            word = word.substr(1, word.size() - 2);
-        }
-        headers.push_back(word);
-    }
-
-    // Imprimir los nombres de las columnas
-    cout << "Columnas del CSV:" << endl;
-    for (const string& header : headers) {
-        cout << header << endl;
-    }
-
-    // Aquí puedes continuar procesando el resto del archivo si es necesario
-
-    // Cerrar el archivo
-    fin.close();
-    return 0;
-}
-*/

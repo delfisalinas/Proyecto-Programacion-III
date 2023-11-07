@@ -3,4 +3,4 @@ project(Proyecto_Programacion_III)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Proyecto_Programacion_III main.cpp nodo.h pila.h cola.h lista.h arbolbinario.h NodoArbol.h hashEntryy.h hashMapp.h contenedor.cpp contenedor.h)
+add_executable(Proyecto_Programacion_III main.cpp Estructuras/ArbolBinario.h Estructuras/Lista.h Estructuras/nodo.h Estructuras/NodoArbol.h Estructuras/Pila.h Estructuras/HashMap/HashEntry.h Estructuras/HashMap/HashMap.h Estructuras/HashMap/HashMapList.h Estructuras/HashMap/Lista.h Estructuras/HashMap/Nodo.h)

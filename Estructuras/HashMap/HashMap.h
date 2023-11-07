@@ -1,18 +1,12 @@
-//
-// Created by delfi on 22/10/2023.
-//
-
-#ifndef PROYECTO_PROGRAMACION_III_HASHMAPP_H
-#define PROYECTO_PROGRAMACION_III_HASHMAPP_H
-#include "hashEntryy.h"
-using namespace std;
+#ifndef U05_HASH_HASHMAP_HASHMAP_H_
+#define U05_HASH_HASHMAP_HASHMAP_H_
+#include "Lista.h"
 #include <iostream>
+#include "HashEntry.h"
 
-template <class K, class T>
-class HashMap
-{
+template <class K, class T> class HashMap {
 private:
-    HashEntry<K, T> **tabla;
+    Lista<HashEntry<K, T>> **tabla;
     unsigned int tamanio;
 
     static unsigned int hashFunc(K clave);
@@ -35,25 +29,18 @@ public:
     bool esVacio();
 
     void print();
-
-    unsigned int size();
-
 };
 
-template <class K, class T>
-HashMap<K, T>::HashMap(unsigned int k)
-{
+template <class K, class T> HashMap<K, T>::HashMap(unsigned int k){
     tamanio = k;
     tabla = new HashEntry<K, T> *[tamanio];
-    for (int i = 0; i < tamanio; i++)
-    {
+    for (int i = 0; i < tamanio; i++){
         tabla[i] = NULL;
     }
+    hashFuncP = hashFunc;
 }
 
-template <class K, class T>
-HashMap<K, T>::HashMap(unsigned int k, unsigned int (*fp)(K))
-{
+template <class K, class T>HashMap<K, T>::HashMap(unsigned int k, unsigned int (*fp)(K)){
     tamanio = k;
     tabla = new HashEntry<K, T> *[tamanio];
     for (int i = 0; i < tamanio; i++)
@@ -63,24 +50,17 @@ HashMap<K, T>::HashMap(unsigned int k, unsigned int (*fp)(K))
     hashFuncP = fp;
 }
 
-template <class K, class T>
-HashMap<K, T>::~HashMap()
-{
-    for (int i = 0; i < tamanio; i++)
-    {
-        if (tabla[i] != NULL)
-        {
+template <class K, class T>HashMap<K, T>::~HashMap(){
+    for (int i = 0; i < tamanio; i++){
+        if (tabla[i] != NULL){
             delete tabla[i];
         }
     }
 }
 
-template <class K, class T>
-T HashMap<K, T>::get(K clave)
-{
+template <class K, class T>T HashMap<K, T>::get(K clave){
     unsigned int pos = hashFuncP(clave) % tamanio;
-    if (tabla[pos] == NULL)
-    {
+    if (tabla[pos] == NULL){
         throw 404;
     }
     if(tabla[pos]->getClave() == clave){
@@ -91,24 +71,20 @@ T HashMap<K, T>::get(K clave)
 }
 
 template <class K, class T>
-void HashMap<K, T>::put(K clave, T valor)
-{
+void HashMap<K, T>::put(K clave, T valor) {
     unsigned int pos = hashFuncP(clave) % tamanio;
 
-    if (tabla[pos] != NULL)
-    {
-        //Manejar la Colision!!!!!!!
-        throw 409;
+    if (tabla[pos] == nullptr) {
+        tabla[pos] = new Lista<HashEntry<K, T>>; // Crear una nueva lista enlazada si no existe
     }
 
-    tabla[pos] = new HashEntry<K, T>(clave, valor); //Corresponde a una fila en la tabla HASH
+    HashEntry<K, T> nuevo(clave, valor);
+    tabla[pos]->insertarUltimo(nuevo); // Insertar el par clave-valor al final de la lista enlazada
 }
 
-template <class K, class T>
-void HashMap<K, T>::remove(K clave) {}
+template <class K, class T>void HashMap<K, T>::remove(K clave) {}
 
-template <class K, class T>
-bool HashMap<K, T>::esVacio()
+template <class K, class T>bool HashMap<K, T>::esVacio()
 {
     for (int i = 0; i < tamanio; i++)
     {
@@ -120,15 +96,12 @@ bool HashMap<K, T>::esVacio()
     return true;
 }
 
-template <class K, class T>
-unsigned int HashMap<K, T>::hashFunc(K clave)
+template <class K, class T>unsigned int HashMap<K, T>::hashFunc(K clave)
 {
     return (unsigned int)clave;
 }
 
-template <class K, class T>
-void HashMap<K, T>::print()
-{
+template <class K, class T>void HashMap<K, T>::print(){
 
     std::cout << "i"
               << " "
@@ -147,22 +120,5 @@ void HashMap<K, T>::print()
         std::cout << std::endl;
     }
 }
-template <class K, class T>
-unsigned int HashMap<K, T>::size()
-{
-    unsigned int count = 0;
-    for (int i = 0; i < tamanio; i++)
-    {
-        if (tabla[i] != NULL)
-        {
-            count++;
-        }
-    }
-    return count;
-}
 
-
-
-
-
-#endif //PROYECTO_PROGRAMACION_III_HASHMAPP_H
+#endif // U05_HASH_HASHMAP_HASHMAP_H_

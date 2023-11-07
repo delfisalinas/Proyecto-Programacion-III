@@ -1,16 +1,12 @@
-//
-// Created by delfi on 22/10/2023.
-//
+#ifndef U05_HASH_HASHMAP_HASHENTRY_H_
+#define U05_HASH_HASHMAP_HASHENTRY_H_
 
-#ifndef PROYECTO_PROGRAMACION_III_HASHENTRYY_H
-#define PROYECTO_PROGRAMACION_III_HASHENTRYY_H
-template <class K, class T>
-class HashEntry
-{
+template <class K, class T> class HashEntry{
 private:
     K clave;
     T valor;
 public:
+
     HashEntry(K c, T v){
         clave = c;
         valor = v;
@@ -29,5 +25,7 @@ public:
     void setValor(T v){
         valor = v;
     }
+
 };
-#endif //PROYECTO_PROGRAMACION_III_HASHENTRYY_H
+
+#endif // U05_HASH_HASHMAP_HASHENTRY_H_

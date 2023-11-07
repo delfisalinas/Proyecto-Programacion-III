@@ -1,0 +1,3 @@
+"C:\Users\verzi\AppData\Local\JetBrains\CLion 2022.3.2\bin\cmake\win\x64\bin\cmake.exe" -E rm -f CMakeFiles\Proyecto_Programacion_III.dir/objects.a
+C:\Users\verzi\AppData\Local\JETBRA~1\CLION2~1.2\bin\mingw\bin\ar.exe qc CMakeFiles\Proyecto_Programacion_III.dir/objects.a @CMakeFiles\Proyecto_Programacion_III.dir\objects1.rsp
+C:\Users\verzi\AppData\Local\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\Proyecto_Programacion_III.dir/objects.a -Wl,--no-whole-archive -o Proyecto_Programacion_III.exe -Wl,--out-implib,libProyecto_Programacion_III.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Proyecto_Programacion_III.dir\linklibs.rsp
