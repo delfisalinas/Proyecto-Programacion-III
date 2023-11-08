@@ -146,9 +146,11 @@ NodoArbol<T> *ArbolBinario<T>::putMin_Stock(T data, NodoArbol<T> *r) {
 
     if (r->getData() >= data)
     {
-        r->setLeft(put(data, r->getLeft()));
+        r->setLeft(putMin_Stock(data, r->getLeft()));
     }
-
+    else {
+        r->setRight(putMin_Stock(data, r->getRight()));
+    }
     return r;
 }
 
@@ -171,7 +173,11 @@ NodoArbol<T> *ArbolBinario<T>::putMax_Stock(T data, NodoArbol<T> *r) {
 
     if (r->getData() <= data)
     {
-        r->setLeft(put(data, r->getLeft()));
+        r->setLeft(putMax_Stock(data, r->getLeft()));
+    }
+    else
+    {
+        r->setRight(putMax_Stock(data, r->getRight()));
     }
 
     return r;

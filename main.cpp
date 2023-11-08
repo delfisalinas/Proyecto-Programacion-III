@@ -190,7 +190,6 @@ struct Articulo {
  * @param n El valor maximo de stock para los articulos a listar.
  */
 
-/*
 void min_stock(int n) {
     // Creacion del arbol binario para almacenar articulos.
     ArbolBinario<Articulo> arbol;
@@ -243,7 +242,7 @@ void min_stock(int n) {
     // Impresion del listado de articulos con stock minimo.
     cout << "*ARTICULOS*" << endl;
     arbol.inorderizq();
-} */
+}
 
 /**
  * @file stock_minimo.cpp
@@ -255,6 +254,8 @@ void min_stock(int n) {
  *
  * @param n El valor maximo de stock para los articulos a listar.
  */
+
+/*
 void min_stock(int n) {
     fstream archivo;
     archivo.open("./Inventariado-Fisico.csv", ios::in);
@@ -292,7 +293,7 @@ void min_stock(int n) {
     minStock.printAbajo();
 }
 
-
+*/
 /**
  * @brief Funcion que lista los articulos con cantidad n o menos de stock segun un deposito.
  *
@@ -303,6 +304,8 @@ void min_stock(int n) {
  * @param n El numero maximo de unidades en stock para considerar un articulo con stock minimo.
  * @param deposito El indice del deposito a revisar (basado en 1).
  */
+
+/*
 void min_stock(int n, int deposito) {
 
     // Inicializar el archivo para leer los datos del inventario
@@ -366,7 +369,8 @@ void min_stock(int n, int deposito) {
     // Imprimir toda la lista de stock minimo
     minStock.printAbajo();
 }
-/*
+*/
+
 /**
  * @brief Establece el stock minimo de un articulo en un arbol binario basado en un archivo CSV.
  *
@@ -377,7 +381,7 @@ void min_stock(int n, int deposito) {
  * @param n La cantidad total de articulos que representara el nodo raiz del arbol.
  * @param deposito El indice del deposito del cual se quiere obtener el stock, comenzando en 1.
  */
-/*
+
 void min_stock(int n, int deposito) {
     // Inicializa el arbol binario para almacenar los articulos.
     ArbolBinario<Articulo> arbol;
@@ -430,7 +434,7 @@ void min_stock(int n, int deposito) {
     cout << "*ARTICULOS*" << endl;
     arbol.inorderizq();
 }
- */
+
 /**
  * @brief Establece el stock minimo de un articulo en un arbol binario basado en un archivo CSV.
  *
