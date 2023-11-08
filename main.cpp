@@ -134,7 +134,11 @@ void total_art(){
     std::cout << "Total de articulos: " << cantidad << std::endl;
 }
 
-/**
+
+
+
+
+ /**
  * @brief Estructura de Articulo con operadores sobrecargados.
  *
  * Esta estructura representa un Articulo y tiene operadores sobrecargados
@@ -142,7 +146,7 @@ void total_art(){
  * estructuras que requieran comparación y visualización.
  */
 
-/
+
 // Estructura Articulo: Utilizada para manejar artículos dentro de un árbol de búsqueda binario.
 struct Articulo {
     string nombre; // Variable para almacenar el nombre del artículo.
@@ -185,6 +189,8 @@ struct Articulo {
  *
  * @param n El valor maximo de stock para los articulos a listar.
  */
+
+/*
 void min_stock(int n) {
     // Creacion del arbol binario para almacenar articulos.
     ArbolBinario<Articulo> arbol;
@@ -237,6 +243,53 @@ void min_stock(int n) {
     // Impresion del listado de articulos con stock minimo.
     cout << "*ARTICULOS*" << endl;
     arbol.inorderizq();
+} */
+
+/**
+ * @file stock_minimo.cpp
+ * @brief Listado de articulos con cantidad n o menos de stock.
+ *
+ * Esta funcióon analiza el inventario de articulos desde un archivo CSV y
+ * crea un arbol binario para organizar los articulos que tienen una cantidad
+ * de stock menor o igual a un valor n especificado.
+ *
+ * @param n El valor maximo de stock para los articulos a listar.
+ */
+void min_stock(int n) {
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv", ios::in);
+    string line, grupo, codigo_barras, articulo, stock_por_deposito;
+    int numDepositos = numColumnas() - 3;
+    Lista<string> minStock;
+    getline(archivo, line);
+
+    while (getline(archivo, line)) {
+        int stock_por_articulo = 0;
+        stringstream s(line);
+        getline(s, grupo, ',');
+        getline(s, codigo_barras, ',');
+        getline(s, articulo, ',');
+        articulo = articulo.substr(1, articulo.size() - 2);
+
+
+        for (int i = 0; i < numDepositos; i++) {
+            getline(s, stock_por_deposito, ',');
+            if (!stock_por_deposito.substr(1, stock_por_deposito.size() - 2).empty()) {
+                stock_por_deposito = stock_por_deposito.substr(1, stock_por_deposito.size() - 2);
+
+            } else {
+                stock_por_deposito = "0";
+            }
+            stock_por_articulo += stoi(stock_por_deposito);
+        }
+        if (stock_por_articulo <= n) {
+            minStock.insertarUltimo(articulo);
+
+        }
+    }
+
+    // Si se necesita imprimir la lista completa descomentar la siguiente línea
+    minStock.printAbajo();
 }
 
 
@@ -285,10 +338,10 @@ void min_stock(int n, int deposito) {
         int stock_actual = 0;
 
         // Recorrer cada deposito y encontrar el stock correspondiente al deposito interesado
-        for(int i = 0; i < numDepositos; i++) {
+        for(int i = 0; i < deposito; i++) {
             getline(s, stock_por_deposito, ',');
             // Verificar si el deposito actual es el deposito de interes
-            if(i == (deposito - 1)) {
+
                 // Remover comillas dobles y verificar que el campo no este vacio
                 if(!stock_por_deposito.substr(1, stock_por_deposito.size() - 2).empty()){
                     stock_por_deposito = stock_por_deposito.substr(1, stock_por_deposito.size() - 2);
@@ -297,25 +350,23 @@ void min_stock(int n, int deposito) {
                 }
                 // Convertir el stock a entero
                 stock_actual = stoi(stock_por_deposito);
-                break;  // Detener el ciclo una vez encontrado el stock del deposito
-            }
         }
 
         // Verificar si el stock actual es menor o igual a 'n'
         if(stock_actual <= n) {
-            // Insertar el articulo en la lista de stock minimo (esta linea esta comentada)
-            // minStock.insertarUltimo(articulo);
+            //Insertar el articulo en la lista de stock minimo
+             minStock.insertarUltimo(articulo);
 
             // Imprimir en consola el articulo con stock minimo
-            cout << "----------------------------------" << endl;
-            cout << articulo << endl;
+           // cout << "----------------------------------" << endl;
+            //cout << articulo << endl;
         }
     }
 
-    // Imprimir toda la lista de stock minimo (esta linea esta comentada)
-    // minStock.printAbajo();
+    // Imprimir toda la lista de stock minimo
+    minStock.printAbajo();
 }
-
+/*
 /**
  * @brief Establece el stock minimo de un articulo en un arbol binario basado en un archivo CSV.
  *
@@ -326,7 +377,8 @@ void min_stock(int n, int deposito) {
  * @param n La cantidad total de articulos que representara el nodo raiz del arbol.
  * @param deposito El indice del deposito del cual se quiere obtener el stock, comenzando en 1.
  */
-void min_stockarbol(int n, int deposito) {
+/*
+void min_stock(int n, int deposito) {
     // Inicializa el arbol binario para almacenar los articulos.
     ArbolBinario<Articulo> arbol;
     Articulo raiz, art;
@@ -378,6 +430,64 @@ void min_stockarbol(int n, int deposito) {
     cout << "*ARTICULOS*" << endl;
     arbol.inorderizq();
 }
+ */
+/**
+ * @brief Establece el stock minimo de un articulo en un arbol binario basado en un archivo CSV.
+ *
+ * Esta funcion construye un arbol binario de articulos, cada uno con su stock actualizado,
+ * de acuerdo con la informacion de un archivo CSV que contiene el inventario fisico.
+ * Se asume que la columna de stock de interes se especifica con el parametro 'deposito'.
+ *
+ * @param n La cantidad total de articulos que representara el nodo raiz del arbol.
+ * @param deposito El indice del deposito del cual se quiere obtener el stock, comenzando en 1.
+ */
+
+/*
+void min_stock(int n, int deposito) {
+
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv", ios::in);
+    string line, grupo, codigo_barras, articulo, stock_por_deposito;
+    int numDepositos = numColumnas() - 3;
+    if(numDepositos<deposito){
+        cout<<"no hay esa cantidad de depostios"<<endl;
+        return;
+    }
+    Lista<string> minStock;
+    getline(archivo, line);
+
+    while(getline(archivo, line)) {
+        stringstream s(line);
+        getline(s, grupo, ',');
+        getline(s, codigo_barras, ',');
+        getline(s, articulo, ',');
+        articulo = articulo.substr(1, articulo.size() - 2);
+
+        int stock_actual=0;
+
+        for(int i = 0; i < deposito; i++) {
+            getline(s, stock_por_deposito, ',');
+            // Asume que deposito empieza en 1
+            if(!stock_por_deposito.substr(1, stock_por_deposito.size() - 2).empty()){
+                stock_por_deposito = stock_por_deposito.substr(1, stock_por_deposito.size() - 2);
+                stock_actual=stoi(stock_por_deposito);
+            } else {
+                stock_actual =0;
+            }
+            // Salir después de obtener el stock del depósito interesado
+
+        }
+
+        if(stock_actual <= n) {
+            minStock.insertarUltimo(articulo);
+
+        }
+    }
+
+    // Si se necesita imprimir la lista completa descomentar la siguiente línea
+    minStock.printAbajo();
+}
+ */
 /**
  * @brief Funcion de hash que utiliza el metodo de multiplicacion.
  *
@@ -708,3 +818,82 @@ int main(int argc, char **argv) {
     // Finaliza la funcion principal retornando 0.
     return 0;
 }
+
+/*
+void min_stockarbol(int n, int deposito) {
+    ArbolBinario<Articulo> arbol;
+    Articulo raiz, art;
+    raiz.nombre = "Raiz";
+    raiz.cantotales = n;
+    arbol.putMin_Stock(raiz);
+
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv", ios::in);
+    string line, grupo, codigo_barras, articulo, stock_por_deposito;
+    int numDepositos = numColumnas() - 3;
+    getline(archivo, line);
+
+    while (getline(archivo, line)) {
+        stringstream s(line);
+        getline(s, grupo, ',');
+        getline(s, codigo_barras, ',');
+        getline(s, articulo, ',');
+        articulo = articulo.substr(1, articulo.size() - 2);
+        art.nombre = articulo;
+        int stock_actual = 0;
+
+        for(int i = 0; i < numDepositos; i++) {
+            getline(s, stock_por_deposito, ',');
+            if (i == (deposito - 1)) {  // Asume que deposito empieza en 1
+                if (!stock_por_deposito.substr(1, stock_por_deposito.size() - 2).empty()) {
+                    stock_por_deposito = stock_por_deposito.substr(1, stock_por_deposito.size() - 2);
+                    stock_actual = stoi(stock_por_deposito);
+                } else {
+                    stock_actual = 0;
+                }
+                break;  // Salir después de obtener el stock del depósito interesado
+            }
+        }
+        art.cantotales = stock_actual;
+        arbol.putMin_Stock(art);
+    }
+    cout << "*ARTICULOS*" << endl;
+    arbol.inorderizq();
+}
+
+void max_stock(int n) {
+    fstream archivo;
+    archivo.open("./Inventariado-Fisico.csv", ios::in);
+    string line, grupo, codigo_barras, articulo, stock_por_deposito;
+    int numDepositos = numColumnas() - 3;
+    Lista<string> minStock;
+    getline(archivo, line);
+
+    while (getline(archivo, line)) {
+        int stock_por_articulo = 0;
+        stringstream s(line);
+        getline(s, grupo, ',');
+        getline(s, codigo_barras, ',');
+        getline(s, articulo, ',');
+        articulo = articulo.substr(1, articulo.size() - 2);
+
+
+        for (int i = 0; i < numDepositos; i++) {
+            getline(s, stock_por_deposito, ',');
+            if (!stock_por_deposito.substr(1, stock_por_deposito.size() - 2).empty()) {
+                stock_por_deposito = stock_por_deposito.substr(1, stock_por_deposito.size() - 2);
+
+            } else {
+                stock_por_deposito = "0";
+            }
+            stock_por_articulo += stoi(stock_por_deposito);
+        }
+        if (stock_por_articulo >= n) {
+            minStock.insertarUltimo(articulo);
+
+        }
+    }
+
+// Si se necesita imprimir la lista completa descomentar la siguiente línea
+    minStock.printAbajo();
+}*/

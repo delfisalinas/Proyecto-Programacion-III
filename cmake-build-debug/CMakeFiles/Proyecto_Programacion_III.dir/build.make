@@ -43,19 +43,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = "C:\Program Files\JetBrains\CLion 2022.3.2\bin\cmake\win\x64\bin\cmake.exe"
+CMAKE_COMMAND = "C:\Program Files\JetBrains\clion2022\CLion 2022.3.2\bin\cmake\win\x64\bin\cmake.exe"
 
 # The command to remove a file.
-RM = "C:\Program Files\JetBrains\CLion 2022.3.2\bin\cmake\win\x64\bin\cmake.exe" -E rm -f
+RM = "C:\Program Files\JetBrains\clion2022\CLion 2022.3.2\bin\cmake\win\x64\bin\cmake.exe" -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\delfi\Documents\Proyecto-Programacion-III
+CMAKE_SOURCE_DIR = "C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\delfi\Documents\Proyecto-Programacion-III\cmake-build-debug
+CMAKE_BINARY_DIR = "C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo\cmake-build-debug"
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Proyecto_Programacion_III.dir/depend.make
@@ -69,18 +69,18 @@ include CMakeFiles/Proyecto_Programacion_III.dir/progress.make
 include CMakeFiles/Proyecto_Programacion_III.dir/flags.make
 
 CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.obj: CMakeFiles/Proyecto_Programacion_III.dir/flags.make
-CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.obj: C:/Users/delfi/Documents/Proyecto-Programacion-III/main.cpp
+CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.obj: C:/Users/Marcos/OneDrive/Escritorio/facultad\ marcos/Programacion/prog\ 3/proyecto\ ultimo/main.cpp
 CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.obj: CMakeFiles/Proyecto_Programacion_III.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\delfi\Documents\Proyecto-Programacion-III\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.obj"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.obj -MF CMakeFiles\Proyecto_Programacion_III.dir\main.cpp.obj.d -o CMakeFiles\Proyecto_Programacion_III.dir\main.cpp.obj -c C:\Users\delfi\Documents\Proyecto-Programacion-III\main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.obj"
+	C:\PROGRA~1\JETBRA~1\CLION2~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.obj -MF CMakeFiles\Proyecto_Programacion_III.dir\main.cpp.obj.d -o CMakeFiles\Proyecto_Programacion_III.dir\main.cpp.obj -c "C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo\main.cpp"
 
 CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.i"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\delfi\Documents\Proyecto-Programacion-III\main.cpp > CMakeFiles\Proyecto_Programacion_III.dir\main.cpp.i
+	C:\PROGRA~1\JETBRA~1\CLION2~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo\main.cpp" > CMakeFiles\Proyecto_Programacion_III.dir\main.cpp.i
 
 CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Proyecto_Programacion_III.dir/main.cpp.s"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\delfi\Documents\Proyecto-Programacion-III\main.cpp -o CMakeFiles\Proyecto_Programacion_III.dir\main.cpp.s
+	C:\PROGRA~1\JETBRA~1\CLION2~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo\main.cpp" -o CMakeFiles\Proyecto_Programacion_III.dir\main.cpp.s
 
 # Object files for target Proyecto_Programacion_III
 Proyecto_Programacion_III_OBJECTS = \
@@ -94,7 +94,7 @@ Proyecto_Programacion_III.exe: CMakeFiles/Proyecto_Programacion_III.dir/build.ma
 Proyecto_Programacion_III.exe: CMakeFiles/Proyecto_Programacion_III.dir/linklibs.rsp
 Proyecto_Programacion_III.exe: CMakeFiles/Proyecto_Programacion_III.dir/objects1.rsp
 Proyecto_Programacion_III.exe: CMakeFiles/Proyecto_Programacion_III.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\delfi\Documents\Proyecto-Programacion-III\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Proyecto_Programacion_III.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Proyecto_Programacion_III.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\Proyecto_Programacion_III.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -106,6 +106,6 @@ CMakeFiles/Proyecto_Programacion_III.dir/clean:
 .PHONY : CMakeFiles/Proyecto_Programacion_III.dir/clean
 
 CMakeFiles/Proyecto_Programacion_III.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\delfi\Documents\Proyecto-Programacion-III C:\Users\delfi\Documents\Proyecto-Programacion-III C:\Users\delfi\Documents\Proyecto-Programacion-III\cmake-build-debug C:\Users\delfi\Documents\Proyecto-Programacion-III\cmake-build-debug C:\Users\delfi\Documents\Proyecto-Programacion-III\cmake-build-debug\CMakeFiles\Proyecto_Programacion_III.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" "C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo" "C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo" "C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo\cmake-build-debug" "C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo\cmake-build-debug" "C:\Users\Marcos\OneDrive\Escritorio\facultad marcos\Programacion\prog 3\proyecto ultimo\cmake-build-debug\CMakeFiles\Proyecto_Programacion_III.dir\DependInfo.cmake" --color=$(COLOR)
 .PHONY : CMakeFiles/Proyecto_Programacion_III.dir/depend
 
