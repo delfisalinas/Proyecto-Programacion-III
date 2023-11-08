@@ -117,11 +117,7 @@ template<class T> NodoArbol<T> *ArbolBinario<T>::put(T data, NodoArbol<T> *r) {
         return new NodoArbol<T>(data);
     }
 
-    if(r->getData()==data){
-        throw 200;
-    }
-
-    if(r->getData()>data){
+    if(r->getData()>=data){
         r->setLeft(put(data, r->getLeft()));
     }else{
         r->setRight(put(data,r->getRight()));
@@ -150,11 +146,7 @@ NodoArbol<T> *ArbolBinario<T>::putMin_Stock(T data, NodoArbol<T> *r) {
 
     if (r->getData() >= data)
     {
-        r->setLeft(putMin_Stock(data, r->getLeft()));
-    }
-    else
-    {
-        r->setRight(putMin_Stock(data, r->getRight()));
+        r->setLeft(put(data, r->getLeft()));
     }
 
     return r;
@@ -179,11 +171,7 @@ NodoArbol<T> *ArbolBinario<T>::putMax_Stock(T data, NodoArbol<T> *r) {
 
     if (r->getData() <= data)
     {
-        r->setLeft(putMax_Stock(data, r->getLeft()));
-    }
-    else
-    {
-        r->setRight(putMax_Stock(data, r->getRight()));
+        r->setLeft(put(data, r->getLeft()));
     }
 
     return r;
