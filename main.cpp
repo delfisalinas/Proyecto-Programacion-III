@@ -129,14 +129,9 @@ void total_art(){
             cantidad += stoi(stock_por_deposito);
         }
     }
-
     // Mostrar en consola la cantidad total de articulos en stock.
     cout << "Total de articulos: " << cantidad << endl;
 }
-
-
-
-
 
  /**
  * @brief Estructura de Articulo con operadores sobrecargados.
@@ -147,8 +142,7 @@ void total_art(){
  *
  * Es util unicamente en el caso que se usen los arboles para las funciones de min y max stock.
  */
-
-
+ /*
 // Estructura Articulo: Utilizada para manejar artículos dentro de un árbol de búsqueda binario.
 struct Articulo {
     string nombre; // Variable para almacenar el nombre del artículo.
@@ -180,7 +174,7 @@ struct Articulo {
         return cantotales >= otro.cantotales;
     }
 };
-
+*/
 
 /**
  * @brief Listado de articulos con cantidad n o menos de stock.
@@ -191,46 +185,56 @@ struct Articulo {
  *
  * @param n El valor maximo de stock para los articulos a listar.
  */
-
-
 void min_stock(int n) {
-
-    if(n<0){
-        cout<<"Numero de stock minimo incorrecto"<<endl;
+    if (n < 0) {
+        // Muestra un mensaje de error si 'n' es negativo y finaliza la función.
+        cout << "Número de stock mínimo incorrecto" << endl;
         return;
     }
 
+    // Abre el archivo "Inventariado-Fisico.csv" para lectura.
     fstream archivo;
     archivo.open("./Inventariado-Fisico.csv", ios::in);
+
+    // Declara variables para almacenar valores de cada línea del archivo.
     string line, grupo, codigo_barras, articulo, stock_por_deposito;
+
+    // Calcula el número de depósitos en función del número de columnas en el archivo.
     int numDepositos = numColumnas() - 3;
+
+    // Crea una lista llamada 'minStock' para almacenar los artículos que cumplen con el stock mínimo.
     Lista<string> minStock;
+
+    // Lee la primera linea del archivo que contiene los encabezados y la descarta.
     getline(archivo, line);
 
+    // Lee cada linea del archivo.
     while (getline(archivo, line)) {
         int stock_por_articulo = 0;
         stringstream s(line);
+
+        // Parsea cada elemento de la linea separado por comas.
         getline(s, grupo, ',');
         getline(s, codigo_barras, ',');
         getline(s, articulo, ',');
         articulo = articulo.substr(1, articulo.size() - 2);
 
-
+        // Itera a traves de los depositos y calcula el stock total por articulo.
         for (int i = 0; i < numDepositos; i++) {
             getline(s, stock_por_deposito, ',');
             if (!stock_por_deposito.substr(1, stock_por_deposito.size() - 2).empty()) {
                 stock_por_deposito = stock_por_deposito.substr(1, stock_por_deposito.size() - 2);
-
             } else {
                 stock_por_deposito = "0";
             }
             stock_por_articulo += stoi(stock_por_deposito);
         }
+        // Si el stock total por artículo es menor o igual a 'n', agrega el artículo a 'minStock'.
         if (stock_por_articulo <= n) {
             minStock.insertarUltimo(articulo);
-
         }
     }
+    // Muestra los artículos cuyo stock total es menor o igual a 'n'.
     cout << "*ARTICULOS*" << endl;
     minStock.printAbajo();
 }
@@ -307,8 +311,6 @@ void min_stock(int n) {
     arbol.inorderizq();
 }
 */
-
-
 /**
  * @brief Funcion que lista los articulos con cantidad n o menos de stock segun un deposito.
  *
@@ -319,16 +321,12 @@ void min_stock(int n) {
  * @param n El numero maximo de unidades en stock para considerar un articulo con stock minimo.
  * @param deposito El indice del deposito a revisar (basado en 1).
  */
-
-
 void min_stock(int n, int deposito) {
-
     //Comprobaciones para ver si la cantidad de stock minimo y el deposito ingresado son validos
     if(deposito <=0 || (numColumnas()-3)<deposito){
         cout<<"Deposito inexistente"<<endl;
         return;
     }
-
     if(n<0){
         cout<<"Numero de stock minimo incorrecto. Pruebe ingresando un numero positivo o 0."<<endl;
         return;
@@ -340,9 +338,6 @@ void min_stock(int n, int deposito) {
 
     // Declaracion de variables para almacenar la informacion de cada linea del archivo CSV
     string line, grupo, codigo_barras, articulo, stock_por_deposito;
-
-    // Calcular el numero de depositos basado en el numero de columnas del archivo CSV
-    int numDepositos = numColumnas() - 3;
 
     // Lista para almacenar los articulos con stock minimo
     Lista<string> minStock;
@@ -375,7 +370,6 @@ void min_stock(int n, int deposito) {
         getline(s, stock_por_deposito, ',');
 
         // Sacar comillas y verificar que no este vacio
-
         if(!stock_por_deposito.substr(1, stock_por_deposito.size() - 2).empty()){
                     stock_por_deposito = stock_por_deposito.substr(1, stock_por_deposito.size() - 2);
         } else {
@@ -480,7 +474,7 @@ void min_stock(int n, int deposito) {
  * @brief Funcion de hash que utiliza el metodo de multiplicacion.
  *
  * Esta funcion de hash recorre cada caracter de la cadena dada,
- * utiliza un factor de multiplicacion de 31 y luego suma el valor ASCII
+ * utiliza un factor de multiplicacion de 131 y luego suma el valor ASCII
  * del caracter actual al hash acumulado. Finalmente, realiza una operacion
  * modulo con un divisor para obtener el hash final.
  *
@@ -496,7 +490,8 @@ unsigned int hashFunc(string clave) {
         // y luego sumamos el valor ASCII del caracter actual.
         hash = (hash * 131) + static_cast<unsigned int>(i);
     }
-
+//La elección de 131 y el uso de un numero primo son estrategias comunes en la construccion de funciones hash para distribuir
+// bien los valores hash y evitar colisiones (cuando dos cadenas diferentes producen el mismo valor hash).
     return hash;
 }
 
@@ -578,7 +573,6 @@ void stock(string nombre_articulo, int deposito) {
         cout << "Articulo " << nombre_articulo << " no encontrado" << endl;
     }
 }
-
 /**
  * @brief Muestra el stock total de un artículo especifico.
  *
@@ -600,20 +594,20 @@ void stock(string nombre_articulo) {
     string line, nombre, grupo, codigoBarras, stock_por_deposito;
     int numDepositos = numColumnas() - 3; // Calcula el número de depósitos
 
-    // Lee la primera línea para descartar el encabezado del CSV
+    // Lee la primera linea para descartar el encabezado del CSV
     getline(archivo, line);
 
-    // Procesa el archivo línea por línea
+    // Procesa el archivo linea por linea
     while (getline(archivo, line)) {
         stringstream s(line);
 
-        // Obtiene los datos del artículo del CSV
+        // Obtiene los datos del articulo del CSV
         getline(s, grupo, ',');
         getline(s, codigoBarras, ',');
         getline(s, nombre, ',');
         nombre = nombre.substr(1, nombre.size() - 2); // Limpia las comillas
 
-        // Vector para almacenar el stock de cada depósito
+        // Vector para almacenar el stock de cada deposito
         vector<int> stock(numDepositos, 0);
 
         // Recorre cada depósito y almacena el stock
@@ -624,13 +618,13 @@ void stock(string nombre_articulo) {
             }
         }
 
-        // Agrega el artículo y su stock al HashMapList
+        // Agrega el articulo y su stock al HashMapList
         hashMap.put(nombre, stock);
     }
 
     archivo.close(); // Cierra el archivo
 
-    // Obtiene la lista de entradas para el artículo especificado
+    // Obtiene la lista de entradas para el articulo especificado
     Lista<HashEntry<string,vector<int>>>* lista = hashMap.get(nombre_articulo);
 
     // Si la lista no es nula, procesa las entradas
@@ -638,7 +632,7 @@ void stock(string nombre_articulo) {
         Nodo<HashEntry<string,vector<int>>>* nodo = lista->getInicio();
         int stock_total = 0; // Variable para almacenar el stock total
 
-        // Recorre la lista y suma el stock de cada depósito
+        // Recorre la lista y suma el stock de cada deposito
         while (nodo != nullptr) {
             if (nodo->getDato().getClave() == nombre_articulo) {
                 vector<int> stock = nodo->getDato().getValor();
@@ -667,60 +661,74 @@ void stock(string nombre_articulo) {
 
 
 /**
- * @brief Listado de aquellos articulos cuyo stock es igual o supera el numero n.
+ * @brief Encuentra y muestra los articulos con un stock total mayor o igual al valor especificado.
  *
- * Esta funcion crea un arbol binario de busqueda para almacenar articulos con
- * una cantidad igual o superior al umbral definido por el parametro 'n'.
- * Luego procede a abrir y leer un archivo CSV que contiene el inventario,
- * procesa cada linea para calcular el stock total de cada articulo y
- * lo agrega al arbol si cumple con la condicion de stock.
- * Finalmente, imprime el listado de articulos en orden.
+ * Esta funcion busca y muestra los articulos cuyo stock total es igual o superior al valor 'n' especificado.
+ * Lee la informacion de los articulos desde un archivo CSV llamado "Inventariado-Fisico.csv".
  *
- * @param n El umbral de stock minimo que debe tener un articulo para ser listado.
+ * @param n El stock maximo deseado.
+ *
+ * La funcion abre el archivo CSV, procesa las lineas de datos, calcula el stock total por artículo
+ * y muestra los artículos que cumplen con el stock máximo en la consola.
+ *
+ * Si 'n' es un numero negativo, se mostrara un mensaje de error y la funcion terminará sin procesar el archivo.
  */
-
 void max_stock(int n) {
-
-    //Validacion de la cantidad de stock maximo ingresado
-    if(n<0){
-        cout<<"Numero de stock maximo incorrecto. Pruebe ingresando un numero positivo o 0."<<endl;
+    // Validacion de la cantidad de stock maximo ingresado
+    if (n < 0) {
+        cout << "Número de stock maximo incorrecto. Pruebe ingresando un numero positivo o 0." << endl;
         return;
     }
 
+    // Abre el archivo "Inventariado-Fisico.csv" para lectura.
     fstream archivo;
     archivo.open("./Inventariado-Fisico.csv", ios::in);
+
+    // Declara variables para almacenar valores de cada linea del archivo.
     string line, grupo, codigo_barras, articulo, stock_por_deposito;
+
+    // Calcula el numero de depositos en función del numero de columnas en el archivo.
     int numDepositos = numColumnas() - 3;
+
+    // Crea una lista llamada 'maxStock' para almacenar los articulos que cumplen con el stock maximo.
     Lista<string> maxStock;
+
+    // Lee la primera linea del archivo que contiene los encabezados y la descarta.
     getline(archivo, line);
 
+    // Lee cada linea del archivo.
     while (getline(archivo, line)) {
         int stock_por_articulo = 0;
         stringstream s(line);
+
+        // Parsea cada elemento de la linea separado por comas.
         getline(s, grupo, ',');
         getline(s, codigo_barras, ',');
         getline(s, articulo, ',');
+
+        // Elimina las comillas que rodean el nombre del articulo.
         articulo = articulo.substr(1, articulo.size() - 2);
 
-
+        // Itera a traves de los depositos y calcula el stock total por articulo.
         for (int i = 0; i < numDepositos; i++) {
             getline(s, stock_por_deposito, ',');
             if (!stock_por_deposito.substr(1, stock_por_deposito.size() - 2).empty()) {
                 stock_por_deposito = stock_por_deposito.substr(1, stock_por_deposito.size() - 2);
-
             } else {
                 stock_por_deposito = "0";
             }
             stock_por_articulo += stoi(stock_por_deposito);
         }
+
+        // Si el stock total por articulo es mayor o igual a 'n', agrega el artículo a 'maxStock'.
         if (stock_por_articulo >= n) {
             maxStock.insertarUltimo(articulo);
         }
     }
 
+    // Muestra los articulos cuyo stock total es mayor o igual a 'n'.
     cout << "*ARTICULOS*" << endl;
     maxStock.printAbajo();
-
 }
 
 
@@ -801,105 +809,87 @@ void max_stock(int n) {
 }
 */
 
-int main(int argc, char **argv) {
-    // Comienza a medir el tiempo de ejecucion del programa.
-    clock_t begin;
-    cout << "Comenzando a medir Tiempo\n" << endl;
-    begin = clock();
+ int main(int argc, char **argv) {
+     // Comienza a medir el tiempo de ejecucion del programa.
+     clock_t begin;
+     cout << "Comenzando a medir Tiempo\n" << endl;
+     begin = clock();
 
+     // Comprueba el primer argumento pasado al programa.
+     if (strcmp(argv[1], "-total_art_dif") == 0) {
+         if (argc > 2) {
+             cout << "Se han agregado argumentos que no corresponden" << endl;
+         } else {
+             total_art_dif();
+         }
+     } else if (strcmp(argv[1], "-total_art") == 0) {
+         if (argc > 2) {
+             cout << "Se han agregado argumentos que no corresponden" << endl;
+         } else {
+             total_art();
+         }
+     } else if (strcmp(argv[1], "-min_stock") == 0) {
+         // Comprueba si la opcion de linea de comandos es "-min_stock".
+         // Comprueba la cantidad de argumentos pasados al programa para la opcion -min_stock.
+         if (argc < 3 || argc > 4) {
+             // Si hay menos de 3 o más de 4 argumentos, muestra un mensaje de error.
+             cout << "ARGUMENTO NO VALIDO" << endl;
+         } else if (argc == 3) {
+             // Si hay 3 argumentos, se espera que el segundo sea un numero entero.
+             try {
+                 int num = stoi(argv[2]);
+                 // Llama a la funcion min_stock con el valor entero proporcionado.
+                 min_stock(num);
+             } catch (const std::invalid_argument& e) {
+                 // Captura una excepcion si el segundo argumento no es un numero valido.
+                 cout << "Ingreso incorrecto. No es un numero valido." << endl;
+             }
+         } else if (argc == 4) {
+             // Si hay 4 argumentos, se esperan dos numeros enteros.
+             try {
+                 int num = stoi(argv[2]);
+                 int dep = stoi(argv[3]);
+                 // Llama a la funcion min_stock con los dos valores enteros proporcionados.
+                 min_stock(num, dep);
+             } catch (const std::invalid_argument& e) {
+                 // Captura una excepcion si alguno de los argumentos no es un numero valido.
+                 cout << "Ingreso incorrecto. No es un numero valido." << endl;
+             }
+         }
+     } else if (strcmp(argv[1], "-stock") == 0) {
+         // Comprueba la cantidad de argumentos pasados al programa para la opción -stock.
+         if (argc < 3 || argc > 4) {
+             cout << "ARGUMENTO NO VALIDO" << endl;
+         } else if (argc == 3) {
+             stock(argv[2]);
+         } else if (argc == 4) {
+             try {
+                 int dep = stoi(argv[3]);
+                 stock(argv[2], dep);
+             } catch (const std::invalid_argument& e) {
+                 cout << "Ingreso incorrecto. No es un numero valido." << endl;
+             }
+         }
+     } else if (strcmp(argv[1], "-max_stock") == 0) {
+         // Comprueba la cantidad de argumentos pasados al programa para la opcion -max_stock.
+         if (argc != 3) {
+             cout << "ARGUMENTO NO VALIDO" << endl;
+         } else {
+             try {
+                 int num = stoi(argv[2]);
+                 max_stock(num);
+             } catch (const std::invalid_argument& e) {
+                 cout << "Ingreso incorrecto. No es un numero valido." << endl;
+             }
+         }
+     } else {
+         cout << "ARGUMENTO NO VALIDO" << endl;
+     }
 
-    int i;
-    string nombreIngresado;
+     cout << endl;
+     clock_t end = clock();
+     double elapsed_secs = static_cast<double>(end - begin) / CLOCKS_PER_SEC;
+     cout << "Tardo elapsed_secs " << elapsed_secs << "\n" << endl;
 
-    if(strcmp(argv[1],"-total_art_dif") == 0){
-
-        if(argc>2){
-            cout<<"Se han agregado argumentos que no corresponden"<<endl;
-        }else{
-            total_art_dif();
-        }
-
-
-    }else if(strcmp(argv[1],"-total_art")==0){
-
-        if(argc>2){
-            cout<<"Se han agregado argumentos que no corresponden"<<endl;
-        }else{
-            total_art();
-        }
-
-
-    }else if(strcmp(argv[1],"-min_stock")==0){
-
-        if(argc<3 || argc>4){
-            cout<<"ARGUMENTO NO VALIDO"<<endl;
-
-        }else if(argc==3){
-                try {
-                    int num=stoi(argv[2]);
-                    min_stock(num);
-                }catch(const std::invalid_argument& e) {
-                    cout<<"Error: "<<e.what()<<"No es un número válido."<<endl;
-                }
-
-            }else if(argc==4){
-                try {
-                    int num=stoi(argv[2]);
-                    int dep=stoi(argv[3]);
-                    min_stock(num,dep);
-                }catch(const std::invalid_argument& e) {
-                    cout<<"Ingreso incorrecto. No es un numero valido."<<endl;
-                }
-            }
-
-
-    }else if(strcmp(argv[1],"-stock")==0){
-
-        i = 2;
-        while(i < argc && strcmp(argv[i],",") != 0){
-            nombreIngresado += argv[i];
-            nombreIngresado += " ";
-            i++;
-        }
-        cout << nombreIngresado << endl;
-
-        nombreIngresado = nombreIngresado.substr(0, nombreIngresado.size() - 1);
-        cout << nombreIngresado << endl;
-
-
-        if(i == argc){
-            stock(nombreIngresado);
-        }else{
-
-            stock(nombreIngresado, stoi(argv[argc - 1]));
-        }
-
-    }else if(strcmp(argv[1],"-max_stock")==0){
-
-        if(argc!=3){
-            cout<<"ARGUMENTO NO VALIDO"<<endl;
-
-        }else{
-
-            try {
-                int num=stoi(argv[2]);
-                max_stock(num);
-            }catch(const std::invalid_argument& e) {
-                cout<<"Ingreso incorrecto. No es un numero valido."<<endl;
-            }
-        }
-
-
-    }else{
-
-        cout << "ARGUMENTO NO VALIDO" << endl;
-    }
-
-    cout << endl;
-    clock_t end = clock();
-    double elapsed_secs = static_cast<double>(end - begin) / CLOCKS_PER_SEC;
-    cout << "Tardo elapsed_secs " << elapsed_secs << "\n" << endl;
-
-
-    return 0;
-}
+     return 0;
+ }
