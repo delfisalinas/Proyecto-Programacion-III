@@ -324,8 +324,8 @@ void Lista<T>::printAbajo() {
     Nodo<T> *aux = inicio;
 
     while (aux != nullptr) {
-        std::cout<<"----------------------------------"<<std::endl;
-        std::cout << aux->getDato() << std::endl;
+        std::cout<<std::endl;
+        std::cout <<">  "<< aux->getDato() << std::endl;
         aux = aux->getSiguiente();
     }
 
